@@ -1,45 +1,147 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+######################
+# Project Specific
+######################
+/src/main/webapp/content/css/main.css
+/target/www/**
+/src/test/javascript/coverage/
+/src/test/javascript/PhantomJS*/
 
-# compiled output
-/dist
-/tmp
-/out-tsc
-# Only exists if Bazel was run
-/bazel-out
+######################
+# Node
+######################
+/node/
+node_tmp/
+node_modules/
+target/
+npm-debug.log.*
+/.awcache/*
+/dist/*
 
-# dependencies
-/node_modules
+######################
+# SASS
+######################
+.sass-cache/
 
-# profiling files
-chrome-profiler-events*.json
-
-# IDEs and editors
-/.idea
+######################
+# Eclipse
+######################
+*.pydevproject
 .project
+.metadata
+tmp/
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
 .classpath
-.c9/
-*.launch
 .settings/
-*.sublime-workspace
+.loadpath
+.factorypath
+/src/main/resources/rebel.xml
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.history/*
+# External tool builders
+.externalToolBuilders/**
 
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
+# Locally stored "Eclipse launch configurations"
+*.launch
 
-# System Files
-.DS_Store
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+######################
+# Intellij
+######################
+.idea/
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+classes/
+
+######################
+# Visual Studio Code
+######################
+.vscode/
+
+######################
+# Maven
+######################
+/log/
+/target/
+
+######################
+# Gradle
+######################
+.gradle/
+/build/
+
+######################
+# Package Files
+######################
+*.jar
+*.war
+*.ear
+*.db
+
+######################
+# Windows
+######################
+# Windows image file caches
 Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+######################
+# Mac OSX
+######################
+.DS_Store
+.svn
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+######################
+# Directories
+######################
+/bin/
+/deploy/
+
+######################
+# Logs
+######################
+*.log*
+
+######################
+# Others
+######################
+*.class
+*.*~
+*~
+.merge_file*
+
+######################
+# Gradle Wrapper
+######################
+!gradle/wrapper/gradle-wrapper.jar
+
+######################
+# Maven Wrapper
+######################
+!.mvn/wrapper/maven-wrapper.jar
+
+######################
+# ESLint
+######################
+.eslintcache
+.springBeans
