@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 import * as SockJS from "sockjs-client";
 import * as Stomp from "stompjs"
+import {ChatService} from "../../servics/chat.service";
 
 @Component({
   selector: 'app-chat',
@@ -20,7 +21,7 @@ export class ChatComponent implements OnInit {
     message: new FormControl('', Validators.required)
   })
 
-  constructor() {
+  constructor(private chatService: ChatService) {
   }
 
   ngOnInit(): void {
@@ -46,10 +47,15 @@ export class ChatComponent implements OnInit {
   onSubmit() {
     let message = this.chatFormGroup.controls.message.value;
     console.log('check connect :', this.isConnected);
-    if (this.isConnected) {
+    if (! this.isConnected) {
       alert('Please connect to Websocket')
       return;
     }
-    console.log('hi :', message)
+    console.log('hi :', message);
+    this.chatService.postMessage(message).subscribe(value => {
+      console.log(value);
+    }, error => {
+      console.log(error);
+    });
   }
 }
