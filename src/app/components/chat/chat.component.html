@@ -1,5 +1,9 @@
 <p>chat works!</p>
 
+<div>
+  Status: {{isConnected}}
+</div>
+
 
 <form [formGroup]="chatFormGroup" (ngSubmit)="onSubmit()">
   <input type="text" placeholder="message" formControlName="message">
