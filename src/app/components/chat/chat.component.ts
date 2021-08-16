@@ -60,7 +60,7 @@ export class ChatComponent implements OnInit {
       from: controls.from.value,
       message: controls.message.value
     }
-    this.chatFormGroup.reset()
+    controls.message.setValue('');
     if (!this.isConnected) {
       alert('Please connect to Websocket')
       return;
