@@ -7,5 +7,14 @@
 
 <form [formGroup]="chatFormGroup" (ngSubmit)="onSubmit()">
   <input type="text" placeholder="message" formControlName="message">
+  <input type="text" placeholder="from" formControlName="from_">
   <input type="submit" value="Send" [disabled]="chatFormGroup.invalid">
 </form>
+
+
+<h3>messages</h3>
+<ul>
+  <li *ngFor="let message of messages">
+    {{message.from}} - {{message.message}} - {{message.created}}
+  </li>
+</ul>

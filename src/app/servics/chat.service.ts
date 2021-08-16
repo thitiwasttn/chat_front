@@ -10,10 +10,11 @@ export class ChatService {
 
   constructor(private http: HttpClient) { }
 
-  postMessage(message: string): Observable<any>{
+  postMessage(message: string, from: string): Observable<any>{
     let url = "http://localhost:8081/chat/message";
     let body = {
-      message: message
+      message: message,
+      from: from
     }
     return this.http.post<any>(url, body);
   }
