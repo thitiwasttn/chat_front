@@ -5,6 +5,7 @@ import * as SockJS from "sockjs-client";
 import * as Stomp from "stompjs"
 import {ChatService} from "../../servics/chat.service";
 import {IChatMassage} from "../../interfaces/i-chat-massage";
+import {environment} from "../../../environments/environment";
 
 @Component({
   selector: 'app-chat',
@@ -16,14 +17,15 @@ export class ChatComponent implements OnInit {
   private stompClient: any;
   isConnected = false;
   private CHANNEL = "/topic/chat";
-  private ENDPOINT = "http://localhost:8081/socket";
-  private from = '';
+  private ENDPOINT = environment.chatEndPoint;
   messages: IChatMassage[] = [];
   chatFormGroup: FormGroup = new FormGroup({
     // Validators massage in not null
-    message: new FormControl('', Validators.required)
+    message: new FormControl('', Validators.required),
+    from: new FormControl('')
   })
-
+  /*message = '';
+  from = '';*/
   constructor(private chatService: ChatService) {
   }
 
@@ -44,32 +46,29 @@ export class ChatComponent implements OnInit {
   private subScribeToGlobalChat() {
     let that = this;
     this.stompClient.subscribe(this.CHANNEL, (message: any) => {
-      //console.log('message :', message.body)
+
       let parse = JSON.parse(message.body) as IChatMassage;
-      /*let newMessage: IChatMassage = {
-        created: new Date(),
-        from: parse.from,
-        massge: parse.message
-      }*/
+
       that.messages.push(parse)
     });
   }
 
   onSubmit() {
-    let message = this.chatFormGroup.controls.message.value;
-    console.log('chatFormGroup', this.chatFormGroup.controls)
-    // let from = this.chatFormGroup.controls.from.value;
-    let from = "x";
-    //console.log('check connect :', this.isConnected);
+    let controls = this.chatFormGroup.controls;
+    // console.log('from :',this.from);
+    let data: IChatMassage = {
+      from: controls.from.value,
+      message: controls.message.value
+    }
+    this.chatFormGroup.reset()
     if (!this.isConnected) {
       alert('Please connect to Websocket')
       return;
     }
-    //console.log('hi :', message);
-    this.chatService.postMessage(message, from).subscribe(value => {
-      //console.log(value);
+    this.chatService.postMessageV2(data).subscribe(value => {
+      // console.log(value);
     }, error => {
-      console.log(error);
+      // console.log(error);
     });
   }
 }
