@@ -27,10 +27,12 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   private ENDPOINT = environment.chatEndPoint;
   messages: IChatMassage[] = [];
   watchTime: Subscription | undefined;
+  chatChannel: string[] = [];
   chatFormGroup: FormGroup = new FormGroup({
     // Validators massage in not null
     message: new FormControl('', Validators.required),
-    from: new FormControl('')
+    from: new FormControl(''),
+    channel: new FormControl('')
   })
 
   constructor(private chatService: ChatService,
@@ -45,10 +47,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   ngOnInit(): void {
-    this.connectWebSocketV2();
-    console.log('this.rxStompService.connected :');
-
-    this.subscribeTime();
+    this.setChatChennel();
   }
 
   initStomp() {
@@ -77,10 +76,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
       // this.subscribeTime();
       // resolve();
     };*/
-    /*this.rxStompService.stompClient.onDisconnect = () => {
+    this.rxStompService.stompClient.onDisconnect = () => {
       console.log('disconnected');
       this.stompClient = false;
-    };*/
+    };
     this.rxStompService.stompClient.onWebSocketClose = () => {
       console.log('socket closed');
       this.stompClient = false;
@@ -97,8 +96,9 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   subscribeTime() {
-    console.log('subscribeTime');
-    this.watchTime = this.rxStompService.watch(this.CHANNEL).subscribe((message: Message) => {
+    let finalChannel = "/topic/" + this.chatFormGroup.controls.channel.value;
+    // console.log('finalChannel :', finalChannel);
+    this.watchTime = this.rxStompService.watch(finalChannel).subscribe((message: Message) => {
       let parse = JSON.parse(message.body) as IChatMassage;
       this.messages.push(parse)
     });
@@ -128,7 +128,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
     let controls = this.chatFormGroup.controls;
     let data: IChatMassage = {
       from: controls.from.value,
-      message: controls.message.value
+      message: controls.message.value,
+      channel: "/topic/" + this.chatFormGroup.controls.channel.value
     }
     controls.message.setValue('');
     this.chatService.postMessageV2(data).subscribe(value => {
@@ -138,35 +139,15 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
     });
   }
 
-
-  testload() {
-    function makeRandom(lengthOfCode: number, possible: string) {
-      let text = "";
-      for (let i = 0; i < lengthOfCode; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-      }
-      return text;
+  private setChatChennel() {
+    for (let i = 0; i < 10; i++) {
+      this.chatChannel.push(i + "");
     }
+    this.chatFormGroup.controls['channel'].setValue('0', {onlySelf: true});
+  }
 
-    let possible = "ABCDEFG";
-    const lengthOfCode = 40;
-    let random = makeRandom(lengthOfCode, possible);
-
-    for (let i = 0; i < 500; i++) {
-      let data: IChatMassage = {
-        from: 'random',
-        message: random
-      }
-      // controls.message.setValue('');
-      if (!this.isConnected) {
-        alert('Please connect to Websocket')
-        return;
-      }
-      this.chatService.postMessageV2(data).subscribe(value => {
-        // console.log(value);
-      }, error => {
-        // console.log(error);
-      });
-    }
+  connect() {
+    this.connectWebSocketV2();
+    this.subscribeTime();
   }
 }
