@@ -10,6 +10,7 @@ import {InjectableRxStompConfig, RxStompService} from "@stomp/ng2-stompjs";
 import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Message} from "stompjs";
+import {RxStompState} from "@stomp/rx-stomp";
 
 
 @Component({
@@ -45,6 +46,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
 
   ngOnInit(): void {
     this.connectWebSocketV2();
+    console.log('this.rxStompService.connected :');
+
     this.subscribeTime();
   }
 
@@ -55,36 +58,41 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   connectWebSocketV2() {
-    return new Promise((resolve, reject) => {
-      const stompConfig: InjectableRxStompConfig = Object.assign({}, null, {
-        brokerURL: environment.chatEndPoint,
-        beforeConnect: () => {
+    const stompConfig: InjectableRxStompConfig = Object.assign({}, null, {
+      brokerURL: environment.chatEndPoint,
+      beforeConnect: () => {
 
-        },
-        heartbeatIncoming: 0,
-        heartbeatOutgoing: 20000,
-        reconnectDelay: 1000,
-        debug: (msg: string): void => {
-          console.log(new Date(), msg);
-        }
-      });
-      this.rxStompService.configure(stompConfig);
-      this.rxStompService.activate();
-      /*this.rxStompService.stompClient.onConnect = () => {
-        console.log('connected');
-        // this.subscribeTime();
-        // resolve();
-      };*/
-      this.rxStompService.stompClient.onDisconnect = () => {
-        console.log('disconnected');
-      };
-      this.rxStompService.stompClient.onWebSocketClose = () => {
-        console.log('socket closed');
-      };
-      this.rxStompService.stompClient.onStompError = (error) => {
-        console.log('stomp error');
-
-      };
+      },
+      heartbeatIncoming: 0,
+      heartbeatOutgoing: 20000,
+      reconnectDelay: 1000,
+      debug: (msg: string): void => {
+        console.log(new Date(), msg);
+      }
+    });
+    this.rxStompService.configure(stompConfig);
+    this.rxStompService.activate();
+    /*this.rxStompService.stompClient.onConnect = () => {
+      console.log('connected');
+      // this.subscribeTime();
+      // resolve();
+    };*/
+    /*this.rxStompService.stompClient.onDisconnect = () => {
+      console.log('disconnected');
+      this.stompClient = false;
+    };*/
+    this.rxStompService.stompClient.onWebSocketClose = () => {
+      console.log('socket closed');
+      this.stompClient = false;
+    };
+    this.rxStompService.stompClient.onStompError = (error) => {
+      console.log('stomp error');
+      this.stompClient = false;
+    };
+    this.rxStompService.connectionState$.subscribe(state => {
+      // state is an Enum (Integer), RxStompState[state] is the corresponding string
+      // console.log('state :',RxStompState[state]);
+      this.isConnected = RxStompState[state] === 'OPEN';
     });
   }
 
@@ -92,7 +100,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
     console.log('subscribeTime');
     this.watchTime = this.rxStompService.watch(this.CHANNEL).subscribe((message: Message) => {
       let parse = JSON.parse(message.body) as IChatMassage;
-
       this.messages.push(parse)
     });
   }
@@ -119,14 +126,13 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
 
   onSubmit() {
     let controls = this.chatFormGroup.controls;
-    // console.log('from :',this.from);
     let data: IChatMassage = {
       from: controls.from.value,
       message: controls.message.value
     }
     controls.message.setValue('');
     this.chatService.postMessageV2(data).subscribe(value => {
-      // console.log(value);
+
     }, error => {
       console.log(error);
     });
