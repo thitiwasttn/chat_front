@@ -1,21 +1,19 @@
 <div class="container">
   <p>chat works!</p>
 
-  <div>
-    Status: {{isConnected}}
+  <div class="col-12">
+    is connected: <strong>{{isConnected}}</strong>
   </div>
+  <br>
 
 
   <form [formGroup]="chatFormGroup" (ngSubmit)="onSubmit()">
-    <input type="text" placeholder="message" formControlName="message">
-    <br>
-    <input type="text" placeholder="from" formControlName="from">
+    <input type="text" placeholder="message" formControlName="message" class="input-group">
+    <input type="text" placeholder="from" formControlName="from" class="input-group">
     <br>
     <input type="submit" value="Send" class="btn btn-danger" [disabled]="chatFormGroup.invalid">
   </form>
-
-  <!--<a href="#" (click)="testload()" class="btn btn-danger">click</a>-->
-
+  <br>
   <h3>messages</h3>
   <ul>
     <li *ngFor="let message of messages">

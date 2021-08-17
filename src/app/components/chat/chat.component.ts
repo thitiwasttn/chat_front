@@ -1,8 +1,8 @@
 import {AfterContentInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
-import * as SockJS from "sockjs-client";
-import * as Stomp from "stompjs"
+/*import * as SockJS from "sockjs-client";
+import * as Stomp from "stompjs"*/
 import {ChatService} from "../../servics/chat.service";
 import {IChatMassage} from "../../interfaces/i-chat-massage";
 import {environment} from "../../../environments/environment";
@@ -104,7 +104,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
     });
   }
 
-  private connectWebSocket() {
+  /*private connectWebSocket() {
     let ws = new SockJS(this.ENDPOINT);
     this.stompClient = Stomp.over(ws);
     let that = this;
@@ -112,7 +112,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
       that.isConnected = true;
       that.subScribeToGlobalChat();
     });
-  }
+  }*/
 
   private subScribeToGlobalChat() {
     let that = this;
