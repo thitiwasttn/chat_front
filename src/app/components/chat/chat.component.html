@@ -1,21 +1,26 @@
-<p>chat works!</p>
+<div class="container">
+  <p>chat works!</p>
 
-<div>
-  Status: {{isConnected}}
+  <div>
+    Status: {{isConnected}}
+  </div>
+
+
+  <form [formGroup]="chatFormGroup" (ngSubmit)="onSubmit()">
+    <input type="text" placeholder="message" formControlName="message">
+    <br>
+    <input type="text" placeholder="from" formControlName="from">
+    <br>
+    <input type="submit" value="Send" class="btn btn-danger" [disabled]="chatFormGroup.invalid">
+  </form>
+
+  <!--<a href="#" (click)="testload()" class="btn btn-danger">click</a>-->
+
+  <h3>messages</h3>
+  <ul>
+    <li *ngFor="let message of messages">
+      {{message.from}} - {{message.message}} - {{message.created  | date:'medium'}}
+    </li>
+  </ul>
+
 </div>
-
-
-<form [formGroup]="chatFormGroup" (ngSubmit)="onSubmit()">
-  <input type="text" placeholder="message" formControlName="message">
-  <input type="text" placeholder="from" formControlName="from">
-  <input type="submit" value="Send" [disabled]="chatFormGroup.invalid">
-</form>
-
-<!--<a href="#" (click)="testload()" class="btn btn-danger">click</a>-->
-
-<h3>messages</h3>
-<ul>
-  <li *ngFor="let message of messages">
-    {{message.from}} - {{message.message}} - {{message.created  | date:'medium'}}
-  </li>
-</ul>

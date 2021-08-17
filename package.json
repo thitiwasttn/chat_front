@@ -20,6 +20,8 @@
     "@angular/router": "~12.2.0",
     "@stomp/ng2-stompjs": "^8.0.0",
     "@stomp/rx-stomp": "^1.1.2",
+    "bootstrap": "^5.1.0",
+    "jquery": "^3.6.0",
     "net": "^1.0.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
