@@ -11,6 +11,8 @@ import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Message} from "stompjs";
 import {RxStompState} from "@stomp/rx-stomp";
+import {Channel} from "../../models/channel.model";
+import {ChannelService} from "../../servics/channel.service";
 
 
 @Component({
@@ -34,12 +36,15 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
     from: new FormControl(''),
     channel: new FormControl('')
   })
+  channels: Channel[];
 
   constructor(private chatService: ChatService,
               private rxStompService: RxStompService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private channelService: ChannelService) {
     this.route.params.subscribe(params => this.params = params);
+    this.channels = [];
   }
 
   ngOnDestroy(): void {
@@ -47,7 +52,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   ngOnInit(): void {
-    this.setChatChennel();
+    // this.setChatChennel();
+    this.loadChannel();
   }
 
   initStomp() {
@@ -56,6 +62,17 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   ngAfterContentInit() {
   }
 
+  loadChannel() {
+    this.channelService.getAllChannel().subscribe(value => {
+      this.channels = value.body;
+      this.channels.forEach(value1 => {
+        if (typeof value1.name === "string") {
+          this.chatChannel.push(value1.name);
+        }
+      })
+      this.chatFormGroup.controls['channel'].setValue(this.channels[0].name, {onlySelf: true});
+    })
+  }
   connectWebSocketV2() {
     const stompConfig: InjectableRxStompConfig = Object.assign({}, null, {
       brokerURL: environment.chatEndPoint,
@@ -137,13 +154,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
     }, error => {
       console.log(error);
     });
-  }
-
-  private setChatChennel() {
-    for (let i = 0; i < 10; i++) {
-      this.chatChannel.push(i + "");
-    }
-    this.chatFormGroup.controls['channel'].setValue('0', {onlySelf: true});
   }
 
   connect() {
