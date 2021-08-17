@@ -41,6 +41,7 @@ export class ChatComponent implements OnInit {
       that.isConnected = true;
       that.subScribeToGlobalChat();
     });
+
   }
 
   private subScribeToGlobalChat() {
@@ -60,7 +61,7 @@ export class ChatComponent implements OnInit {
       from: controls.from.value,
       message: controls.message.value
     }
-    controls.message.setValue('');
+    // controls.message.setValue('');
     if (!this.isConnected) {
       alert('Please connect to Websocket')
       return;
@@ -70,5 +71,36 @@ export class ChatComponent implements OnInit {
     }, error => {
       // console.log(error);
     });
+  }
+
+
+  testload() {
+    function makeRandom(lengthOfCode: number, possible: string) {
+      let text = "";
+      for (let i = 0; i < lengthOfCode; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+      return text;
+    }
+    let possible = "ABCDEFG";
+    const lengthOfCode = 40;
+    let random = makeRandom(lengthOfCode, possible);
+
+    for (let i = 0; i < 500; i++) {
+      let data: IChatMassage = {
+        from: 'random',
+        message: random
+      }
+      // controls.message.setValue('');
+      if (!this.isConnected) {
+        alert('Please connect to Websocket')
+        return;
+      }
+      this.chatService.postMessageV2(data).subscribe(value => {
+        // console.log(value);
+      }, error => {
+        // console.log(error);
+      });
+    }
   }
 }

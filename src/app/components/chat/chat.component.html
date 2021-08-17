@@ -11,10 +11,11 @@
   <input type="submit" value="Send" [disabled]="chatFormGroup.invalid">
 </form>
 
+<!--<a href="#" (click)="testload()" class="btn btn-danger">click</a>-->
 
 <h3>messages</h3>
 <ul>
   <li *ngFor="let message of messages">
-    {{message.from}} - {{message.message}} - {{message.created}}
+    {{message.from}} - {{message.message}} - {{message.created  | date:'medium'}}
   </li>
 </ul>
