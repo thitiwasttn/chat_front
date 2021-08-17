@@ -66,13 +66,12 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
     this.channelService.getAllChannel().subscribe(value => {
       this.channels = value.body;
       this.channels.forEach(value1 => {
-        if (typeof value1.name === "string") {
-          this.chatChannel.push(value1.name);
-        }
+        this.chatChannel.push(value1.id + "");
       })
-      this.chatFormGroup.controls['channel'].setValue(this.channels[0].name, {onlySelf: true});
+      this.chatFormGroup.controls['channel'].setValue(this.channels[0].id + "", {onlySelf: true});
     })
   }
+
   connectWebSocketV2() {
     const stompConfig: InjectableRxStompConfig = Object.assign({}, null, {
       brokerURL: environment.chatEndPoint,
