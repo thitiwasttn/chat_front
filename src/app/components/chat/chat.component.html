@@ -28,8 +28,8 @@
   <br>
   <h3>messages</h3>
   <ul>
-    <li *ngFor="let message of messages">
-      {{message.from}} - {{message.message}} - {{message.created  | date:'medium'}}
+    <li *ngFor="let message of messagesV2">
+      {{message.createBy}} - {{message.message}} - {{message.createDate  | date:'medium'}}
     </li>
   </ul>
 

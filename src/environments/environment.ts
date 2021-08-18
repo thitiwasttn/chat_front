@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  backendUrl: "http://localhost:8081",
-  chatEndPoint: "http://localhost:8081/socket"
+  backendUrl: "http://61.19.242.56/chat",
+  chatEndPoint: "ws://61.19.242.56/ws/socket"
 };
 
 /*
