@@ -15,6 +15,7 @@ import {ChannelService} from "../../servics/channel.service";
 import {IMessageRequest} from "../../interfaces/i-message-request";
 import {MessageModel} from "../../models/message-model.model";
 import {Message} from "stompjs";
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -114,12 +115,12 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
     });
   }
 
-  subscribeTime() {
-    let finalChannel = "/topic/" + this.chatFormGroup.controls.channel.value;
+  subscribeTime(channelId: number) {
+    let finalChannel = "/topic/" + channelId;
     // console.log('finalChannel :', finalChannel);
     this.watchTime = this.rxStompService.watch(finalChannel).subscribe((message: Message) => {
       let parse = JSON.parse(message.body) as MessageModel;
-      console.log(parse);
+      // console.log(parse);
       this.messagesV2.unshift(parse)
       /*let parse = JSON.parse(message.body) as IChatMassage;
       this.messages.push(parse)*/
@@ -163,7 +164,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
 
   connect() {
     this.connectWebSocketV2();
-    this.subscribeTime();
+    this.subscribeTime(this.chatFormGroup.controls.channel.value);
     this.messagesV2 = [];
     this.getMessageByChannel();
   }
@@ -182,6 +183,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
       alert('cant get messages');
       console.error(error);
     });
+
+  }
+
+  testLoad() {
 
   }
 }

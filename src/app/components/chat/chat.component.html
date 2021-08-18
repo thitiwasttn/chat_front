@@ -26,11 +26,16 @@
     <input type="submit" value="Send" class="btn btn-danger" [disabled]="chatFormGroup.invalid">
   </form>
   <br>
+  <div>
+    <input type="button" value="test" class="btn btn-success" (click)="testLoad();">
+  </div>
+  <br>
   <h3>messages</h3>
   <ul>
     <li *ngFor="let message of messagesV2">
       {{message.createBy}} - {{message.message}} - {{message.createDate  | date:'medium'}}
     </li>
   </ul>
+
 
 </div>
