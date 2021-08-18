@@ -77,6 +77,9 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   connectWebSocketV2() {
+    if (this.isConnected) {
+      this.watchTime?.unsubscribe();
+    }
     const stompConfig: InjectableRxStompConfig = Object.assign({}, null, {
       brokerURL: environment.chatEndPoint,
       beforeConnect: () => {
@@ -212,7 +215,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   private loadTest(channel: number) {
-    this.subscribeTime(channel);
+    // this.subscribeTime(channel);
     let that = this;
     for (let i = 0; i < 10; i++) {
       setTimeout(function () {
