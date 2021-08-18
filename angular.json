@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "baseHref": "/chat_front/",
             "outputPath": "dist/frontend-chat",
             "index": "src/index.html",
             "main": "src/main.ts",

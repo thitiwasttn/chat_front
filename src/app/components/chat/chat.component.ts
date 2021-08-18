@@ -187,6 +187,50 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   testLoad() {
+    this.chatChannel.forEach((value, index) => {
+      console.log('channel : {} ', value)
+      this.loadTest(parseInt(value));
+    });
+    /*for (let i = 1; i <= 2; i++) {
+      console.log('channel : {} ', i)
+      this.loadTest(i);
+    }*/
+  }
+
+  randomStr(length: number): string {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  private sendMessage() {
+
+  }
+
+  private loadTest(channel: number) {
+    this.subscribeTime(channel);
+    let that = this;
+    for (let i = 0; i < 10; i++) {
+      setTimeout(function () {
+        let message =  'IAM BOT : '+ that.randomStr(15);
+
+        let data: IChatMassage = {
+          from: "bot A channel " + channel,
+          message: message,
+          channel: "/topic/" + channel
+        }
+        that.chatService.postMessageV2(data).subscribe(value => {
+
+        }, error => {
+          console.log(error);
+        });
+      }, (i + 1) * 2000
+      );
+    }
 
   }
 }
