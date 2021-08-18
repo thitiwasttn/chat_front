@@ -24,6 +24,6 @@ export class ChatService {
   }
 
   postMessageV2(data: IChatMassage): Observable<any>{
-    return this.http.post<any>(this.chatUrl, data);
+    return this.http.put<any>(this.chatUrl, data);
   }
 }

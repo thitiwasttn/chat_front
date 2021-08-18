@@ -158,5 +158,11 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
   connect() {
     this.connectWebSocketV2();
     this.subscribeTime();
+    this.getMessageByChannel();
+  }
+
+  private getMessageByChannel() {
+    let channel = this.chatFormGroup.controls.channel.value;
+    console.log('channel :', channel);
   }
 }
