@@ -123,6 +123,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterContentInit {
     // console.log('finalChannel :', finalChannel);
     this.watchTime = this.rxStompService.watch(finalChannel).subscribe((message: Message) => {
       let parse = JSON.parse(message.body) as MessageModel;
+      parse.clientReceiveDate = new Date();
       // console.log(parse);
       this.messagesV2.unshift(parse)
       /*let parse = JSON.parse(message.body) as IChatMassage;

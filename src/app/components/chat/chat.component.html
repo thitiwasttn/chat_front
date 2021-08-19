@@ -31,11 +31,37 @@
   </div>
   <br>
   <h3>messages</h3>
-  <ul>
+  <table  class="table table-bordered">
+    <thead>
+    <tr>
+      <th>from</th>
+      <th>message</th>
+      <th>send date</th>
+      <th>receive date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let message of messagesV2">
+      <td>
+        {{message.createBy}}
+      </td>
+      <td>
+        {{message.message}}
+      </td>
+      <td>
+        {{message.createDate  | date:'medium'}}
+      </td>
+      <td>
+        {{message.clientReceiveDate  | date:'medium'}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!--<ul>
     <li *ngFor="let message of messagesV2">
-      {{message.createBy}} - {{message.message}} - {{message.createDate  | date:'medium'}}
+      {{message.createBy}} - {{message.message}} - {{message.createDate  | date:'medium'}} - {{message.clientReceiveDate  | date:'medium'}}
     </li>
-  </ul>
+  </ul>-->
 
 
 </div>

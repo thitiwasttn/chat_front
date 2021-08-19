@@ -4,6 +4,7 @@ export class MessageModel {
               public message?: string,
               public createBy?: string,
               public channelId?: number,
-              public createDate?: Date) {
+              public createDate?: Date,
+              public clientReceiveDate?: Date) {
   }
 }
